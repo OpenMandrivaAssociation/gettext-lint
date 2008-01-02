@@ -9,6 +9,7 @@ Group: Development/Other
 Requires: gettext
 BuildArchitectures: noarch
 BuildRequires: python-devel
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 The gettext lint tools are a collection of tools for checking the validity,
