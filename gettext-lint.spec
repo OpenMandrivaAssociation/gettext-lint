@@ -1,10 +1,11 @@
 Name: gettext-lint
 Summary: Gettext linting tools
 Version: 0.4
-Release: %mkrel 3
+Release: %mkrel 4
 License: GPL
 URL: http://gettext-lint.sourceforge.net/
 Source: http://prdownloads.sourceforge.net/%name/%name-%version.tar.bz2
+Patch0: gettext-lint-0.4-check_formats.patch
 Group: Development/Other
 Requires: gettext
 BuildArchitectures: noarch
@@ -18,11 +19,12 @@ An experimental glossary building tool is also included.
 
 %prep
 %setup -q
+%patch0 -p1
+
+%build
 aclocal
 autoconf
 automake -a -c
-
-%build
 %configure2_5x
 %make
 
