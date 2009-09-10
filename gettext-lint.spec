@@ -1,7 +1,7 @@
 Name: gettext-lint
 Summary: Gettext linting tools
 Version: 0.4
-Release: %mkrel 4
+Release: %mkrel 5
 License: GPL
 URL: http://gettext-lint.sourceforge.net/
 Source: http://prdownloads.sourceforge.net/%name/%name-%version.tar.bz2
