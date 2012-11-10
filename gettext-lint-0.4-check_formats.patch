@@ -1,0 +1,53 @@
+--- gettext-lint-0.4/src/POFile.py
++++ gettext-lint-0.4/src/POFile.py
+@@ -10,6 +10,7 @@
+ 
+ import string
+ import capitalization
++import re
+ 
+ class POFile:
+ 
+@@ -30,6 +31,7 @@ class POFile:
+         self.enableCheckCapitalization = 0
+         self.accelerator = '&'
+         self.enableCheckEndPontuation = 1
++        self.enableCheckFormats = 1
+         self.enableCheckLineLength = 0
+         self.ignoreFuzzy = 0
+         self.spellExtra = []
+@@ -197,6 +199,8 @@ class POFile:
+                     i, "CheckAccelerator", self.enableCheckAccelerator)
+                 self.enableCheckEndPontuation = self.get_header_int(
+                     i, "CheckEndPontuation", self.enableCheckEndPontuation)
++                self.enableCheckFormats = self.get_header_int(
++                    i, "CheckFormats", self.enableCheckFormats)
+                 self.enableCheckLineLength = self.get_header_int(
+                     i, "CheckLineLength", self.enableCheckLineLength)
+                 self.append_header_string(i, "IgnoreConsistency",
+@@ -321,6 +325,8 @@ class POFile:
+                 self.checkCapitalization(i, s, l, msg)
+             if self.enableCheckEndPontuation:
+                 self.checkEndPontuation(i, s, l, msg)
++            if self.enableCheckFormats:
++                self.checkFormats(i, s, l, msg)
+             if len(s) > 1 and s[:2] == "_:":
+                 self.errors.append((l, msg, '_: on msgstr'))
+             if s[-1] == "<" and i[-1] != '<':
+@@ -362,6 +368,16 @@ class POFile:
+         elif i[-1] == '.' and s[-1] != '.':
+             self.errors.append((pos, msg, 'missing .'))
+ 
++    def checkFormats(self, i, s, pos, msg):
++        formats_RE = re.compile("%[^diouxXeEfFgGaAcsCSpnm%\s]*[diouxXeEfFgGaAcsCSpnm%]|%[0-9]+")
++        for f in set(re.findall(formats_RE, i) + re.findall(formats_RE, s)):
++            i_count = i.count(f)
++            s_count = s.count(f)
++            if i_count > s_count:
++                self.errors.append((pos, msg, "missing '%s'" % f))
++            elif i_count < s_count:
++                self.errors.append((pos, msg, "extra '%s'" % f))
++
+     def checkLineLength(self, line, pos, msg, limit, single_lines):
+         linesplit = line.split('\\n')
+         if len(linesplit) > 1:
