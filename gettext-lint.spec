@@ -3,7 +3,7 @@ Summary: Gettext linting tools
 Version: 0.4
 Release: 7
 License: GPL
-URL: http://gettext-lint.sourceforge.net/
+URL: https://gettext-lint.sourceforge.net/
 Source: http://prdownloads.sourceforge.net/%name/%name-%version.tar.bz2
 Patch0: gettext-lint-0.4-check_formats.patch
 Group: Development/Other
